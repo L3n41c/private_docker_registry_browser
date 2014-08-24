@@ -1,0 +1,45 @@
+<p>This is the search view.</p>
+
+<form name="form" class="form-inline" role="form" novalidate="novalidate">
+  <div class="form-group">
+    <label for="query">Search pattern: </label>
+    <input class="form-control" name="query" id="query" ng-model="query" ng-change="search()" ng-required="true" ng-minlength="2"/>
+    <span class="error" ng-show="form.query.$error.required">
+      <span class="glyphicon glyphicon-warning-sign"></span>
+      This field is mandatory
+    </span>
+    <span class="error" ng-show="form.query.$error.minlength">
+      <span class="glyphicon glyphicon-warning-sign"></span>
+      Too short
+    </span>
+  </div>
+</form>
+
+<p>{{searchResult.num_results}} results:</p>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Repository</th>
+      <td>Tags</td>
+      <td>Description</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="r in searchResult.results | orderBy:predicate">
+      <th>{{r.name}}</th>
+      <td>
+        <span class="btn glyphicon glyphicon-plus-sign" ng-if="!tags[r.name]" ng-click="getTags(r.name)"></span>
+        <table class="table table-condensed" ng-if="tags[r.name]">
+          <tbody>
+            <tr ng-repeat="(tag, image) in tags[r.name]">
+              <td>{{tag}}</td>
+              <td>{{image}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+      <td>{{r.description}}</td>
+    </tr>
+  </tbody>
+</table>
